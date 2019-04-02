@@ -1,6 +1,9 @@
 import moment from 'moment';
 import chalk from 'chalk';
 import { parsePath } from './helpers/path';
+import makeDebug from 'debug';
+
+const debug = makeDebug('feathers-hooks-rediscache:redis');
 
 const defaults = {};
 
@@ -29,8 +32,8 @@ export function before(options) { // eslint-disable-line no-unused-vars
 
           /* istanbul ignore next */
           if (process.env.NODE_ENV !== 'test') {
-            console.log(`${chalk.cyan('[redis]')} returning cached value for ${chalk.green(path)}.`);
-            console.log(`> Expires on ${duration}.`);
+            debug(`${chalk.cyan('[redis]')} returning cached value for ${chalk.green(path)}.`);
+            debug(`> Expires on ${duration}.`);
           }
         } else {
           resolve(hook);
@@ -70,8 +73,8 @@ export function after(options) { // eslint-disable-line no-unused-vars
 
         /* istanbul ignore next */
         if (process.env.NODE_ENV !== 'test') {
-          console.log(`${chalk.cyan('[redis]')} added ${chalk.green(path)} to the cache.`);
-          console.log(`> Expires in ${moment.duration(duration, 'seconds').humanize()}.`);
+          debug(`${chalk.cyan('[redis]')} added ${chalk.green(path)} to the cache.`);
+          debug(`> Expires in ${moment.duration(duration, 'seconds').humanize()}.`);
         }
       }
       resolve(hook);
